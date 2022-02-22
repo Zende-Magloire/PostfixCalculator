@@ -102,6 +102,7 @@ public class PostfixCalculator {
             postfix += operator + " ";
             //  return postfix expression
         }
+        System.out.println("Postfix: " + postfix);
         return postfix;
     }
 
@@ -132,8 +133,15 @@ public class PostfixCalculator {
             else
             {
                 // convert token to double and push onto stack
-                Double token_doub = Double.valueOf(String.valueOf(tokenizer));
-                dStack.push(token_doub);
+                try
+                {
+                    Double token_doub = Double.valueOf(String.valueOf(dToken));
+                    dStack.push(token_doub);
+                }
+                catch(NumberFormatException e )
+                {
+
+                }
             }
         }
             // there should only be 1 element left in the stack now
