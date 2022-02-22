@@ -1,13 +1,44 @@
 import java.util.StringTokenizer;
 
-public class PostfixCalculator
-{
-    public PostfixCalculator()
-    {
+public class PostfixCalculator {
+    public PostfixCalculator() {
     }
-    
-    public static String infix2postfix(String infix)
+
+    private String operator;
+
+    public static int precedenceLevel(String op)
     {
+        switch (op) {
+            case "+":
+            case "-":
+                return 0;
+            case "*":
+            case "/":
+                return 1;
+            case "(":
+            case ")":
+                return 2;
+            default:
+                throw new IllegalArgumentException("Operator unknown: " + op);
+        }
+    }
+
+    public static double operate(String op, double a, double b)
+    {
+        String operator = op;
+        double result = 0;
+        if (operator == "/")
+            result = (a / b);
+        else if (operator == "*")
+            result = (a * b);
+        else if (operator == "-")
+            result = (a - b);
+        else if (operator == "+")
+            result = (a + b);
+        return result;
+    }
+
+    public static String infix2postfix(String infix) {
         String operator = "";
 
         // Algorithm to convert infix string to postfix string
@@ -23,7 +54,8 @@ public class PostfixCalculator
             String token = tokenizer.nextToken();
 
             //   if token is an open parenthesis
-            if (token.equals("(")) {
+            if (token.equals("("))
+            {
                 //  push token on stack
                 mStack.push(token);
             }
@@ -42,9 +74,11 @@ public class PostfixCalculator
             }
 
             //   else if token is an operator
-            else if (token == "+" || token == "-" || token == "/" || token == "*") {
+            else if (token == "+" || token == "-" || token == "/" || token == "*")
+            {
                 // while stack is not empty and precedence of token is less than top of stack (peek)
-                while (!mStack.isEmpty()) {
+                while (!mStack.isEmpty() && precedenceLevel(token) < precedenceLevel(mStack.peek()))
+                {
                     // pop top from stack and append it and single space to postfix expression
                     String tp = mStack.pop();
                     postfix += tp + " ";
@@ -61,17 +95,17 @@ public class PostfixCalculator
         }
 
         // while stack is not empty
-        while (!mStack.isEmpty()) {
+        while (!mStack.isEmpty())
+        {
             //   pop and append operator and single space to postfix expression
-
+            operator = mStack.pop();
+            postfix += operator + " ";
             //  return postfix expression
-            return postfix;
         }
-        return "";
+        return postfix;
     }
 
-    public static double solve(String postfix)
-    {
+    public static double solve(String postfix) {
         // Algorithm to solve postfix expression
         //
         // create a stack of doubles
@@ -79,31 +113,34 @@ public class PostfixCalculator
         // tokenize the postfix expression with a delimiter of space
         StringTokenizer tokenizer = new StringTokenizer(postfix, " ");
         // while tokenizer has more tokens
-        while (tokenizer.hasMoreTokens()) {
+        while (tokenizer.hasMoreTokens())
+        {
             //   token = get next token from tokenizer
             String dToken = tokenizer.nextToken();
             //   if token is an operator
             if (dToken == "+" || dToken == "-" || dToken == "/" || dToken == "*") {
                 //     operand b = pop top of stack
-                Double operandB = dStack.peek();
+                Double operandB = dStack.pop();
                 //     operand a = pop top of stack
-                Double operandA = dStack.peek();
+                Double operandA = dStack.pop();
                 //     result = a operator b
-                Double result = ;
+                Double result = operate(dToken, operandA, operandB);
                 //     push result onto stack
                 dStack.push(result);
             }
             //   else
-            else {
-                //     convert token to double and push onto stack
+            else
+            {
+                // convert token to double and push onto stack
                 Double token_doub = Double.valueOf(String.valueOf(tokenizer));
+                dStack.push(token_doub);
             }
+        }
             // there should only be 1 element left in the stack now
             // if there is more than 1 element or the stack is empty, you have a bug
             // answer = pop off top of stack
             Double answer = dStack.pop();
             // return answer
-
-            return 0;
-        }
+        return answer;
     }
+}
