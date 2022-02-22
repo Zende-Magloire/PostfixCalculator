@@ -16,13 +16,11 @@ public class Stack <E>
 
     private Node<E> mTop;
     private int Size;
-    private String op;
 
     public Stack()
     {
         mTop = null;
         Size = 0;
-        op = " ";
     }
 
     public boolean isEmpty()
