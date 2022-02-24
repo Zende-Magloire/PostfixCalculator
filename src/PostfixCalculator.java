@@ -8,34 +8,51 @@ public class PostfixCalculator {
 
     public static int precedenceLevel(String op)
     {
-        switch (op) {
+        switch (op)
+        {
             case "+":
             case "-":
                 return 0;
             case "*":
             case "/":
+            case "^":
                 return 1;
             case "(":
             case ")":
                 return 2;
             default:
-                throw new IllegalArgumentException("Operator unknown: " + op);
+                return -1;
         }
     }
+
+    public static boolean isOperator(String token)
+    {
+        if (token.equals("+") || token.equals("-") || token.equals("/") || token.equals("*") || token.equals("^"))
+        {
+            return true;
+        }
+        return false;
+    }
+
 
     public static double operate(String op, double a, double b)
     {
         String operator = op;
-        double result = 0;
-        if (operator == "/")
-            result = (a / b);
-        else if (operator == "*")
-            result = (a * b);
-        else if (operator == "-")
-            result = (a - b);
-        else if (operator == "+")
-            result = (a + b);
-        return result;
+        switch (op)
+        {
+            case "+":
+                return a + b;
+            case "-":
+                return a - b;
+            case "*":
+                return a * b;
+            case "/":
+                return a / b;
+            case "^":
+                return Math.pow(a,b);
+            default:
+                return 0;
+        }
     }
 
     public static String infix2postfix(String infix) {
@@ -74,18 +91,20 @@ public class PostfixCalculator {
             }
 
             //   else if token is an operator
-            else if (token == "+" || token == "-" || token == "/" || token == "*")
-            {
+            else if (isOperator(token))
+           {
                 // while stack is not empty and precedence of token is less than top of stack (peek)
                 while (!mStack.isEmpty() && precedenceLevel(token) < precedenceLevel(mStack.peek()))
                 {
                     // pop top from stack and append it and single space to postfix expression
-                    String tp = mStack.pop();
-                    postfix += tp + " ";
+                   if (!mStack.peek().equals("(")) {
+                       String tp = mStack.pop();
+                       postfix += tp + " ";
+                   }
                 }
                 //  after loop, push operator token onto stack
-                mStack.push(operator);
-            }
+                mStack.push(token);
+           }
 
             //   else
             else {
@@ -119,7 +138,8 @@ public class PostfixCalculator {
             //   token = get next token from tokenizer
             String dToken = tokenizer.nextToken();
             //   if token is an operator
-            if (dToken == "+" || dToken == "-" || dToken == "/" || dToken == "*") {
+            if (isOperator(dToken))
+            {
                 //     operand b = pop top of stack
                 Double operandB = dStack.pop();
                 //     operand a = pop top of stack
