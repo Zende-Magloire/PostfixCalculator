@@ -82,7 +82,8 @@ public class PostfixCalculator {
                 //  operator = pop top from stack
                 operator = mStack.pop();
                 //  while operator doesn't equal open parenthesis
-                while (!operator.equals("(")) {
+                while (!operator.equals("("))
+                {
                     // append operator and a single space to postfix expression
                     postfix += operator + " ";
                     // operator = pop top from stack
@@ -97,10 +98,8 @@ public class PostfixCalculator {
                 while (!mStack.isEmpty() && precedenceLevel(token) < precedenceLevel(mStack.peek()))
                 {
                     // pop top from stack and append it and single space to postfix expression
-                   if (!mStack.peek().equals("(")) {
-                       String tp = mStack.pop();
-                       postfix += tp + " ";
-                   }
+                    String tp = mStack.pop();
+                    postfix += tp + " ";
                 }
                 //  after loop, push operator token onto stack
                 mStack.push(token);

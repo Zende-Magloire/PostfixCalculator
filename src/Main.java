@@ -11,13 +11,18 @@
 // Any changes you make to this class will not be used for grading.
 //-------------------------------------------------------------------
 
+import java.util.Scanner;
+
 public class Main
 {
-    private static final String DefInput = "3 + -2 * 2";
 
     public static void main(String[] args)
     {
-        String infix = DefInput;
+        Scanner scanner_one = new Scanner(System.in);
+
+        System.out.println("Enter infix equation (eg. 3 + -2 * 2): ");
+        String infix = scanner_one.nextLine();
+        System.out.println("Infix: " + infix);
         if (args != null && args.length > 0)
             infix = args[0];
 
